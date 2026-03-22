@@ -3,7 +3,6 @@ from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
 import aiosqlite
 from jose import JWTError, jwt
-import os
 from datetime import datetime, timedelta, timezone
 
 from database import DB_PATH
@@ -11,7 +10,7 @@ from database import DB_PATH
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
-SECRET = os.getenv("APP_SECRET", "attrition-dev-secret-change-in-production")
+SECRET = "attrition-dev-secret-change-in-production"
 ALGO = "HS256"
 ACCESS_MINUTES = 60 * 24 * 7
 
