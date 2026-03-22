@@ -1,0 +1,123 @@
+{
+  "dataset_path": "D:\\Employee_Attrition\\WA_Fn-UseC_-HR-Employee-Attrition.csv",
+  "n_samples": 1470,
+  "n_features_raw": 30,
+  "numeric_columns": [
+    "Age",
+    "DailyRate",
+    "DistanceFromHome",
+    "Education",
+    "EnvironmentSatisfaction",
+    "HourlyRate",
+    "JobInvolvement",
+    "JobLevel",
+    "JobSatisfaction",
+    "MonthlyIncome",
+    "MonthlyRate",
+    "NumCompaniesWorked",
+    "PercentSalaryHike",
+    "PerformanceRating",
+    "RelationshipSatisfaction",
+    "StockOptionLevel",
+    "TotalWorkingYears",
+    "TrainingTimesLastYear",
+    "WorkLifeBalance",
+    "YearsAtCompany",
+    "YearsInCurrentRole",
+    "YearsSinceLastPromotion",
+    "YearsWithCurrManager"
+  ],
+  "categorical_columns": [
+    "BusinessTravel",
+    "Department",
+    "EducationField",
+    "Gender",
+    "JobRole",
+    "MaritalStatus",
+    "OverTime"
+  ],
+  "attrition_rate": 0.16122448979591836,
+  "holdout_accuracy": 0.8401360544217688,
+  "top_feature_importance": [
+    {
+      "feature": "num__MonthlyIncome",
+      "value": 0.07692540824694052
+    },
+    {
+      "feature": "num__Age",
+      "value": 0.06262199130291025
+    },
+    {
+      "feature": "num__TotalWorkingYears",
+      "value": 0.060596788900799795
+    },
+    {
+      "feature": "num__DailyRate",
+      "value": 0.05268079812809383
+    },
+    {
+      "feature": "num__YearsAtCompany",
+      "value": 0.04538315193867258
+    },
+    {
+      "feature": "num__YearsWithCurrManager",
+      "value": 0.04275620137027736
+    },
+    {
+      "feature": "num__DistanceFromHome",
+      "value": 0.04264215618307385
+    },
+    {
+      "feature": "num__MonthlyRate",
+      "value": 0.040273543693928805
+    },
+    {
+      "feature": "num__HourlyRate",
+      "value": 0.039554346458957536
+    },
+    {
+      "feature": "num__NumCompaniesWorked",
+      "value": 0.037835027548173895
+    },
+    {
+      "feature": "cat__OverTime_No",
+      "value": 0.03679306175798546
+    },
+    {
+      "feature": "cat__OverTime_Yes",
+      "value": 0.03360718566343715
+    },
+    {
+      "feature": "num__StockOptionLevel",
+      "value": 0.032762597302245254
+    },
+    {
+      "feature": "num__YearsInCurrentRole",
+      "value": 0.03101671373947571
+    },
+    {
+      "feature": "num__PercentSalaryHike",
+      "value": 0.028600136759946878
+    },
+    {
+      "feature": "num__JobLevel",
+      "value": 0.027315382775416036
+    },
+    {
+      "feature": "num__EnvironmentSatisfaction",
+      "value": 0.02724333560597756
+    },
+    {
+      "feature": "num__JobSatisfaction",
+      "value": 0.026862439688334325
+    },
+    {
+      "feature": "num__RelationshipSatisfaction",
+      "value": 0.0194227385446545
+    },
+    {
+      "feature": "num__YearsSinceLastPromotion",
+      "value": 0.018802678736318107
+    }
+  ]
+}
