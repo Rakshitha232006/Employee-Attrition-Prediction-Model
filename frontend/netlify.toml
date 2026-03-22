@@ -1,0 +1,22 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://employee-attrition-prediction-model-production.up.railway.app/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/predict"
+  to = "https://employee-attrition-prediction-model-production.up.railway.app/predict"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/health"
+  to = "https://employee-attrition-prediction-model-production.up.railway.app/health"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
