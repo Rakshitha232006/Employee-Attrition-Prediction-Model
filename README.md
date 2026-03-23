@@ -1,79 +1,262 @@
-# Employee Attrition Prediction System
+# Employee Attrition Prediction Model
 
-Full-stack demo: **FastAPI** + **scikit-learn** backend with **SQLite**, and a **React (Vite)** dashboard (Tailwind CSS, Framer Motion, Recharts, Axios) with a dark, glassmorphism-style UI.
+A full-stack HR analytics application that predicts employee attrition risk, estimates burnout, analyzes sentiment, simulates retention policies, and provides workforce intelligence insights.
+
+The platform is designed as a practical demo and portfolio project with a production-oriented architecture:
+
+- Backend API with FastAPI + Python
+- Frontend dashboard with React + Vite + Tailwind CSS
+- ML pipeline for attrition classification and explainability
+- HR analytics modules for forecasting, simulation, and organizational network risk
+
+## Table of Contents
+
+1. [Features](#features)
+2. [Tech Stack](#tech-stack)
+3. [Project Structure](#project-structure)
+4. [How It Works](#how-it-works)
+5. [Getting Started](#getting-started)
+6. [API Reference](#api-reference)
+7. [Frontend Pages](#frontend-pages)
+8. [Data and Model Artifacts](#data-and-model-artifacts)
+9. [Known Demo Assumptions](#known-demo-assumptions)
+10. [Production Hardening Roadmap](#production-hardening-roadmap)
+
+## Features
+
+- Employee attrition prediction with multiple candidate models and best-model selection by ROC-AUC.
+- Burnout scoring based on work pattern and satisfaction signals.
+- Explainable AI feature importance using SHAP (with fallback when SHAP is unavailable).
+- Sentiment analysis of employee feedback text using VADER + TextBlob.
+- Department-level attrition forecasting with optional ARIMA/Prophet support.
+- Workforce digital twin simulation for policy what-if analysis:
+  - salary increase
+  - overtime reduction
+  - promotion rate adjustment
+- Organizational network risk using graph analysis (NetworkX).
+- Rule-based HR assistant for natural language Q and A over workforce context.
+
+## Tech Stack
+
+### Backend
+
+- FastAPI, Uvicorn
+- Pydantic, pydantic-settings
+- pandas, NumPy
+- scikit-learn, imbalanced-learn (SMOTE), XGBoost (optional)
+- SHAP (explainability)
+- statsmodels and Prophet (optional forecasting refinement)
+- TextBlob and vaderSentiment (NLP sentiment)
+- NetworkX (graph risk)
+- joblib (model persistence)
+
+### Frontend
+
+- React 18
+- React Router
+- Axios
+- Recharts
+- React Flow
+- Vite
+- Tailwind CSS + PostCSS + Autoprefixer
+
+## Project Structure
+
+```text
+Employee_Attrition_Prediction_Model/
+	backend/                       # FastAPI app + ML/analytics modules
+		app.py                       # API entrypoint
+		train_model.py               # model training script
+		predict.py                   # inference orchestration
+		preprocess.py                # feature processing pipeline
+		model_loader.py              # lazy model loading/training
+		sentiment_analysis.py
+		burnout_detection.py
+		forecasting.py
+		workforce_simulation.py
+		network_analysis.py
+		hr_ai_agent.py
+		schemas.py
+		requirements.txt
+	frontend/                      # React dashboard
+		src/
+			App.jsx
+			api/api.js                 # API client
+			pages/                     # Dashboard, Predictions, Analytics, Simulation
+			components/                # charts, forms, widgets
+		package.json
+	data/
+		WA_Fn-UseC_-HR-Employee-Attrition.csv
+	models/                        # serialized model artifacts (.pkl)
+	outputs/
+		reports/training_report.json
+```
+
+## How It Works
+
+1. Data is loaded from the IBM HR dataset.
+2. Features are preprocessed with imputation, scaling, and one-hot encoding.
+3. Multiple attrition classifiers are trained and evaluated.
+4. The best model is persisted and used for API inference.
+5. Inference can combine:
+   - attrition model probability
+   - burnout signal
+   - optional sentiment adjustment from feedback text
+6. The frontend visualizes model output, forecast data, simulation outcomes, and network impact.
+
+If model files are missing, the backend can auto-train on startup or first use.
+
+## Getting Started
 
 ## Prerequisites
 
 - Python 3.10+
 - Node.js 18+
+- npm 9+
 
-## 1. Backend (FastAPI)
+### 1) Clone and open the project
 
-```powershell
-cd backend
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python model\train_model.py
-uvicorn app:app --reload --host 127.0.0.1 --port 8001
+```bash
+git clone <your-repo-url>
+cd Employee_Attrition_Prediction_Model
 ```
 
-- Trains a **Random Forest pipeline** (numeric + one-hot categoricals) on **`WA_Fn-UseC_-HR-Employee-Attrition.csv`** only — default path `D:\Employee_Attrition\WA_Fn-UseC_-HR-Employee-Attrition.csv`, or the project root copy, or set **`ATTRITION_DATASET_PATH`**. No synthetic data.
-- After training: **`GET /api/analysis-summary`** returns `model/analysis_summary.json` (columns, accuracy, top importances).
-- API: `http://127.0.0.1:8001`  
-  On Windows, **`WinError 10013`** often means the port is blocked or in an exclusion range (common for **8000** and sometimes **8080**). This project defaults the Vite proxy to **8001** — keep the backend on the same port, or change both `vite.config.js` and the `uvicorn` command to match.
-- **POST** `http://127.0.0.1:8001/predict` — JSON body: `age`, `job_role`, `income`, `years_at_company`, `satisfaction`, `work_life_balance`, `overtime`.
-- **GET** `http://127.0.0.1:8001/docs` — OpenAPI UI.
-- CORS is enabled for local development.
+### 2) Backend setup
 
-## 2. Frontend (Vite + React)
+```bash
+cd backend
+python -m venv .venv
+```
 
-```powershell
+Activate virtual environment:
+
+- Windows PowerShell:
+
+```bash
+.venv\Scripts\Activate.ps1
+```
+
+- macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Optional explicit training:
+
+```bash
+python train_model.py
+```
+
+Run backend API:
+
+```bash
+uvicorn app:app --reload --host 0.0.0.0 --port 8000
+```
+
+Backend base URL: `http://127.0.0.1:8000`
+
+### 3) Frontend setup
+
+Open a new terminal:
+
+```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. The dev server proxies `/api`, `/predict`, and `/health` to the backend on port **8001** (see `frontend/vite.config.js`).
+Frontend default URL: `http://localhost:5173`
 
-Production build:
+## API Reference
 
-```powershell
-npm run build
-npm run preview
-```
+Base URL: `http://127.0.0.1:8000`
 
-## Features
+- `GET /health`
+  - Service health check.
 
-- **Dashboard**: KPIs, attrition trend line chart, department bar chart, satisfaction vs work-life scatter (risk-colored).
-- **Predict**: Styled form → probability, risk band (Low / Medium / High), confidence, SHAP-like contributions + feature importance, recommendations.
-- **Workforce table**: Search, risk filter, highlighted high-risk rows.
-- **AI assistant**: Rule-based chat via `POST /api/chat`.
-- **Auth (optional)**: `POST /api/auth/register` and `POST /api/auth/login` (JWT in response). The UI stores the token for authenticated requests; you can still open the dashboard via “Continue without auth” on the login page.
+- `POST /predict`
+  - Predict attrition risk for one employee profile.
+  - Accepts features such as age, income, overtime, satisfaction, tenure, and optional `feedback_text`.
 
-## Project layout
+- `POST /sentiment-analysis`
+  - Sentiment scoring for free-text feedback.
 
-```
-Employee_Attrition/
-├── backend/
-│   ├── app.py
-│   ├── ml_service.py
-│   ├── database.py
-│   ├── data/attrition.db   (created on first run)
-│   ├── model/
-│   │   ├── train_model.py
-│   │   └── model.pkl       (created by training script)
-│   └── routes/
-└── frontend/
-    └── src/
-        ├── components/
-        ├── pages/
-        ├── layouts/
-        ├── services/
-        └── App.jsx
-```
+- `GET /burnout-score`
+  - Burnout score endpoint with query parameters.
 
-## Notes
+- `GET /feature-importance`
+  - Global feature importance (SHAP when available).
 
-- Delete `backend/data/attrition.db` if you need a fresh employee seed after changing the model.
-- Change `SECRET` in `backend/routes/auth.py` before any production deployment.
+- `GET /department-forecast`
+  - Department attrition forecast for next quarter.
+
+- `POST /simulate-policy`
+  - Simulate retention policy impact.
+
+- `GET /network-risk?leaver_id=<id>`
+  - Potential influence/risk propagation if an employee exits.
+
+- `POST /hr-chat`
+  - Natural language HR assistant response.
+
+FastAPI docs:
+
+- Swagger UI: `http://127.0.0.1:8000/docs`
+- ReDoc: `http://127.0.0.1:8000/redoc`
+
+## Frontend Pages
+
+- Dashboard:
+  - KPI overview, forecast chart, feature importance, risk table, HR chat.
+- Predictions:
+  - Single-employee prediction form, risk gauge, burnout indicator, recommendations.
+- Analytics:
+  - Risk and attrition visualizations (mix of live and conceptual demo widgets).
+- Simulation:
+  - Policy sliders and department-level before/after attrition output.
+- Workforce Intelligence:
+  - Workforce health snapshot, insights, network graph, HR assistant.
+
+## Data and Model Artifacts
+
+Expected dataset path:
+
+- `data/WA_Fn-UseC_-HR-Employee-Attrition.csv`
+
+Optional feedback dataset:
+
+- `data/employee_feedback.csv`
+
+Generated artifacts:
+
+- `models/attrition_model.pkl`
+- `models/burnout_model.pkl`
+- `models/sentiment_model.pkl`
+- `outputs/reports/training_report.json`
+
+If the IBM dataset is not present, synthetic demo data is used so the app remains runnable.
+
+## Known Demo Assumptions
+
+- Some UI cards and analytics values are static/demo placeholders.
+- Simulation uses heuristic elasticities (not causal inference).
+- Burnout scoring is currently heuristic-driven for responsiveness.
+- HR chat is rule-based and context-grounded, not an external LLM integration.
+
+## Production Hardening Roadmap
+
+- Add real HRIS integrations and scheduled batch scoring.
+- Persist predictions, timelines, and feedback in a database.
+- Add authentication, RBAC, audit logs, and PII governance.
+- Add model monitoring, drift detection, and retraining pipelines.
+- Introduce robust testing and CI/CD workflows.
+- Containerize backend and frontend for cloud deployment.
+
+
